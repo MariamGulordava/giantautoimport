@@ -37,7 +37,7 @@ export async function POST(context: APIContext): Promise<Response> {
   const userId = generateId(15);
   const hashed_password = await new Argon2id().hash(password);
 
-  await db.insert(Users).values({userId, username, hashed_password, phone_number, email});
+  await db.insert(Users).values({id: userId, username, hashed_password, phone_number, email});
 
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);

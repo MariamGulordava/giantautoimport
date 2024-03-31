@@ -1,15 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+let user;
 if (!Astro.locals.user) {
     return Astro.redirect("/login")
+} else {
+    user = JSON.stringify(Astro.locals.user);
 }
 ---
 
 <Layout title="Welcome to Astro.">
-	
+	<h1>{user}</h1>
 </Layout>
 
 <style>
-	
+	h1 {
+        color: white;
+    }
 </style>
