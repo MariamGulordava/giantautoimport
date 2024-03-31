@@ -1,15 +1,13 @@
-// pages/api/signup.ts
+// pages/api/login.ts
 import { lucia } from "@lib/auth";
-import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
-import { db, Users } from "astro:db";
+import { db, like, Users } from "astro:db";
 
 import type { APIContext } from "astro";
 
 export async function POST(context: APIContext): Promise<Response> {
   const formData = await context.request.formData();
   const username = formData.get("username");
-
   if (
     typeof username !== "string" ||
     username.length < 3 ||
@@ -31,13 +29,25 @@ export async function POST(context: APIContext): Promise<Response> {
     });
   }
 
-  const email = formData.get("email");
-  const phone_number = formData.get("phone_number");
+  const existingUser = await db.select().from(Users).where(like(Users.username, username));
 
-  const userId = generateId(15);
-  const hashed_password = await new Argon2id().hash(password);
+  if (!existingUser || existingUser.length === 0) {
+    return new Response("Incorrect username or password", {
+      status: 400,
+    });
+  }
 
-  await db.insert(Users).values({userId, username, hashed_password, phone_number, email});
+  const validPassword = await new Argon2id().verify(
+    existingUser[0].hashed_password,
+    password
+  );
+  if (!validPassword) {
+    return new Response("Incorrect username or password", {
+      status: 400,
+    });
+  }
+
+  const userId = existingUser[0].id;
 
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
