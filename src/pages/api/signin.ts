@@ -1,5 +1,5 @@
 // pages/api/login.ts
-import { lucia } from "@lib/auth";
+import { lucia } from "../../auth";
 import { Argon2id } from "oslo/password";
 import { db, like, Users } from "astro:db";
 

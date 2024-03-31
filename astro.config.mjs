@@ -10,5 +10,10 @@ export default defineConfig({
   adapter: node({
     mode: "standalone"
   }),
-  integrations: [auth(), db()]
+  integrations: [auth(), db()],
+  vite: {
+    optimizeDeps: {
+			exclude: ["astro:db"]
+		}
+  }
 });

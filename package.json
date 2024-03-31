@@ -14,9 +14,11 @@
     "@astrojs/db": "^0.9.8",
     "@astrojs/node": "^8.2.5",
     "@auth/core": "^0.18.6",
+    "@lucia-auth/adapter-sqlite": "^3.0.1",
     "astro": "^4.5.12",
     "auth-astro": "^4.1.1",
     "lucia": "^3.1.1",
+    "lucia-adapter-astrodb": "^0.0.7",
     "typescript": "^5.4.3"
   }
 }
