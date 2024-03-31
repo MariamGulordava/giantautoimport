@@ -1,8 +1,8 @@
 import { Lucia } from "lucia";
-import { db, User, Session } from "astro:db";
+import { db, Users, Session } from "astro:db";
 import { AstroDBAdapter } from "lucia-adapter-astrodb";
 
-const adapter = new AstroDBAdapter(db, Session, User);
+const adapter = new AstroDBAdapter(db, Session, Users);
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -20,6 +20,6 @@ export const lucia = new Lucia(adapter, {
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: Omit<typeof User, "id">;
+    DatabaseUserAttributes: Omit<typeof Users, "id">;
   }
 }
